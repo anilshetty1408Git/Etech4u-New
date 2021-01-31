@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="ISO-8859-1">
+<title>Logged Details</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+.bg-color {
+	background-color: #ffa500;
+}
+
+.azure {
+	color: azure;
+}
+</style>
+</head>
+<body>
+	<nav
+		class="navbar navbar-expand-lg navbar-light bg-color container-fluid">
+
+		<header>
+			<div>
+				<img src="/images/header.jpeg" class="rounded float-left"
+					width="500" height="100">
+			</div>
+		</header>
+
+		<div class="col-lg-1"></div>
+
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="nav navbar-nav">
+
+				<li class="nav-item active border-primary"><a class="nav-link"
+					href="#"> Lecture Videos <span class="sr-only">(current)</span>
+				</a></li>
+
+				<li class="nav-item dropdown border-primary"><a
+					class="nav-link dropdown-toggle" href="#"
+					id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Lecture Videos </a>
+					<div class="dropdown-menu "
+						aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" href="/firstYear" th:href="@{/firstYear}">First
+							Year</a> <a class="dropdown-item" href="/civilEngineering"
+							th:href="@{/civilEngineering}">Civil Engineering</a>
+					</div></li>
+				<li class="nav-item border-primary"><a class="nav-link"
+					href="/aboutUs" th:href="@{/aboutUs}">Smart Presentation </a></li>
+				<!-- <li class="nav-item border-primary"><a class="nav-link"
+					href="/aboutUs" th:href="@{/aboutUs}">More </a></li> -->
+				<!-- <li class="nav-item border-primary"><a class="nav-link"
+					href="#">Sign in</a></li> -->
+
+			</ul>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="nav navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link" href="/"
+						th:href="@{/admin}">Admin</a></li>
+				</ul>
+				<ul class="nav navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link" href="/"
+						th:href="@{/}">Home</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br>
+	<!-- 	<h4 th:text="#{count}"></h4> -->
+	<div class="row">
+		<div class="col-lg-1"></div>
+		<div class="col-lg-11">
+			<p>
+				Total count is: <span th:text="${count}">13 February 2011</span>
+			</p>
+			<table>
+				<thead>
+					<tr>
+						<th>IP Details</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th>Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${list.empty}">
+						<td colspan="2">No Books Available</td>
+					</tr>
+					<tr th:each="list : ${list}">
+						<td><span th:text="${list.ipAddress}"> IP Details </span></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><span th:text="${list.date}"> Time </span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
