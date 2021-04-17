@@ -4,7 +4,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title>Docss</title>
+<title>Admin</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet"
@@ -14,12 +14,14 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href="/css/style4.css">
 </head>
 
-<body>
+<body class="bg-color">
+	<!-- 	<div lang="en" th:insert="header_other :: header_other"></div> -->
+
 	<nav
-		class="navbar navbar-expand-md navbar-light bg-color container-fluid"
+		class="navbar navbar-expand-lg navbar-light bg-color container-fluid"
 		style="background: #ffa500;">
 
 		<header>
@@ -29,7 +31,7 @@
 			</div>
 		</header>
 
-		<div class="col-md-1"></div>
+		<div class="col-lg-1"></div>
 
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
 			<ul class="nav navbar-nav">
@@ -45,7 +47,8 @@
 					<div class="dropdown-menu "
 						aria-labelledby="navbarDropdownMenuLink">
 						<a class="dropdown-item" href="/firstYear" th:href="@{/firstYear}">First
-							Year</a> <a class="dropdown-item" href="/civilEngineering"
+							Year</a><a class="dropdown-item" href="@{/mathematics}"
+							th:href="@{/mathematics}">Mathematics</a> <a class="dropdown-item" href="/civilEngineering"
 							th:href="@{/civilEngineering}">Civil Engineering</a>
 					</div></li>
 				<li class="nav-item border-primary"><a class="nav-link"
@@ -53,6 +56,8 @@
 
 				<li class="nav-item border-primary"><a class="nav-link"
 					href="/getLoggedIPs">Count</a></li>
+				<li class="nav-item border-primary"><a class="nav-link"
+					href="/uploadMaths">Other Upload</a></li>
 			</ul>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="nav navbar-nav ml-auto">
@@ -125,24 +130,6 @@
 		<div class="col-md-4 border"></div>
 		<div class="col-md-4"></div>
 	</div>
-	<footer th:fragment="footer">
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-5 azure">
-				<h3>Products</h3>
-				<p>Lecture Videos</p>
-				<p>Lecture Notes</p>
-				<p>Smart Presentation</p>
-			</div>
-
-			<div class="col-md-5 azure">
-				<h3>Contact Us</h3>
-				<p>Phone : +91-8970253213</p>
-				<p align="center" style="margin-right: 330px !important">&nbsp;&nbsp;:
-					+91-9780785238</p>
-				<p>Email &nbsp;: etechplatform4u@gmail.com</p>
-			</div>
-		</div>
-	</footer>
+	<div lang="en" th:insert="footer :: footer"></div>
 </body>
 </html>

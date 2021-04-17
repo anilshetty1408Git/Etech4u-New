@@ -46,7 +46,7 @@ public class RedirectController {
 		return "redirect:/home";
 	}
 
-	@GetMapping("/admin")
+	@GetMapping("/20NanU14")
 	public String admin(Model model) {
 		model.addAttribute("subject", new Subject());
 		return "admin";
@@ -123,6 +123,19 @@ public class RedirectController {
 	@GetMapping("/index")
 	public String showIndex() {
 		return "index";
+	}
+
+	@GetMapping("/mathematics")
+	public String mathematics(Model model) {
+		List<String> firstYearList = service.getFirstYearCourseName("Maths");
+		model.addAttribute("courseList", firstYearList);
+		return "maths";
+	}
+
+	@GetMapping("/uploadMaths")
+	public String uploadMaths(Model model) {
+		model.addAttribute("subject", new Subject());
+		return "uploadMaths";
 	}
 
 }

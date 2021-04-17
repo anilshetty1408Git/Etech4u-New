@@ -1,32 +1,46 @@
-<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
-	<!-- Static navbar -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Project name</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">About</a></li>
-				</ul>
 
-				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="./">Default <span
-							class="sr-only">(current)</span></a></li>
-					<li><a href="../navbar-static-top/">Static top</a></li>
-					<li><a href="../navbar-fixed-top/">Fixed top</a></li>
-				</ul>
+<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+	<div class="row"></div>
+	<nav
+		class="navbar navbar-expand-md navbar-light bg-color container-fluid">
+
+		<header>
+			<div>
+				<img src="/images/header.jpeg" class="rounded float-left"
+					width="500" height="100">
 			</div>
-			<!--/.nav-collapse -->
+		</header>
+
+		<div class="col-md-1"></div>
+
+		<div class="collapse navbar-collapse" id="navbarNavDropdown"
+			style="font-size: larger;">
+			<ul class="nav navbar-nav">
+
+				<li class="nav-item active border-primary"><a class="nav-link"
+					href="#"> Lecture Notes <span class="sr-only">(current)</span>
+				</a></li>
+
+				<li class="nav-item dropdown border-primary active "><a
+					class="nav-link dropdown-toggle" href="#"
+					id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Lecture Videos </a>
+					<div class="dropdown-menu "
+						aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" href="/firstYear" th:href="@{/firstYear}">First
+							Year</a> <a class="dropdown-item" href="@{/mathematics}"
+							th:href="@{/mathematics}">Mathematics</a><a
+							class="dropdown-item" href="/civilEngineering"
+							th:href="@{/civilEngineering}">Civil Engineering</a>
+					</div></li>
+				<li class="nav-item active border-primary"><a class="nav-link"
+					href="/aboutUs" th:href="@{/aboutUs}">Smart Presentation </a></li>
+				<!-- <li class="nav-item border-primary"><a class="nav-link"
+					href="/aboutUs" th:href="@{/aboutUs}">More </a></li> -->
+				<!-- <li class="nav-item border-primary"><a class="nav-link"
+					href="#">Sign in</a></li> -->
+			</ul>
+
 		</div>
-		<!--/.container-fluid -->
 	</nav>
 </header>

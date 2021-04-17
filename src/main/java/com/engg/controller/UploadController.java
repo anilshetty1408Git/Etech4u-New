@@ -26,7 +26,7 @@ public class UploadController {
 		// check if file is empty
 		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Please select a file to upload.");
-			return "redirect:/admin";
+			return "redirect:/20NanU14";
 		}
 
 		// normalize the file path
@@ -37,6 +37,27 @@ public class UploadController {
 		// return success response
 		attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
 
-		return "redirect:/admin";
+		return "redirect:/20NanU14";
+	}
+
+	@PostMapping("/uploadMaths")
+	public String uploadMaths(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
+			@ModelAttribute("subject") Subject subject, BindingResult result) {
+
+		// check if file is empty
+		if (file.isEmpty()) {
+			attributes.addFlashAttribute("message", "Please select a file to upload.");
+			return "redirect:/20NanU14";
+		}
+
+		// normalize the file path
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+		uploadService.uploadService(file, subject.getYear(), subject.getOrderForDisplay(), subject.getCourseName());
+
+		// return success response
+		attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+
+		return "redirect:/uploadMaths";
 	}
 }

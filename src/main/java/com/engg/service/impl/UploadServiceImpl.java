@@ -96,7 +96,7 @@ public class UploadServiceImpl implements UploadService {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			
+
 		}
 
 		return deptList;
