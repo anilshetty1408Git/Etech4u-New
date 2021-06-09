@@ -28,12 +28,29 @@ public class RedirectController {
 	@Autowired
 	private UploadService service;
 
+	private static final String[] HEADERS_TO_TRY = { "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP",
+			"HTTP_X_FORWARDED_FOR", "HTTP_X_FORWARDED", "HTTP_X_CLUSTER_CLIENT_IP", "HTTP_CLIENT_IP",
+			"HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR" };
+
+	private static String getClientIpAddress(HttpServletRequest request) {
+
+		for (String header : HEADERS_TO_TRY) {
+			String ip = request.getHeader(header);
+			if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+				return ip;
+			}
+		}
+
+		return "Hello";
+	}
+
 	@GetMapping("/")
 	public String landingPage(ModelAndView model, HttpServletRequest request) {
+
 		InetAddress ip;
+		IpAddress address = new IpAddress();
 		try {
 			ip = InetAddress.getLocalHost();
-			IpAddress address = new IpAddress();
 			address.setIpAddress(String.valueOf(ip));
 			address.setDate(new Date());
 			service.saveIpAddress(address);
@@ -42,6 +59,8 @@ public class RedirectController {
 
 			e.printStackTrace();
 		}
+
+		String s = getClientIpAddress(request);
 
 		return "redirect:/home";
 	}
@@ -68,9 +87,9 @@ public class RedirectController {
 		return "home";
 	}
 
-	@GetMapping("/aboutUs")
-	public String aboutUs() {
-		return "aboutUs";
+	@GetMapping("/smartPresentation")
+	public String smartPresentation() {
+		return "smartPresentation";
 	}
 
 	@GetMapping("/signIn")
@@ -80,7 +99,7 @@ public class RedirectController {
 
 	@GetMapping("/civilEngineering")
 	public String civilDepartment(Model model) {
-		List<String> enggList = service.getOtherYearCourseName("1");
+		List<String> enggList = service.getOtherYearCourseName("1", "Maths");
 
 		Map<Integer, List<String>> map = new TreeMap<>();
 		List<String> list = new ArrayList<>();
@@ -138,4 +157,56 @@ public class RedirectController {
 		return "uploadMaths";
 	}
 
+	@GetMapping("/pdfDisplayDemo")
+	public String displayPDF() {
+		return "PDFDemo";
+	}
+
+	@GetMapping("/aboutUs")
+	public String AboutUs() {
+		return "aboutUs";
+	}
+
+	@GetMapping("/lectureNotes")
+	public String getLetcureNotes(Model model) {
+//		List<String> firstYearList = service.getFirstYearCourseName("Maths");
+//		model.addAttribute("courseList", firstYearList);
+
+		List<String> enggList = service.getAllYearAndDeptNotes();
+
+		Map<String, List<String>> map = new TreeMap<>();
+		List<String> list = new ArrayList<>();
+//		enggList.stream().map(s -> s.split(",")[0]).forEach(map.put(s, value));
+
+		for (String string : enggList) {
+			if (map.containsKey(string.split(",")[0])) {
+				list = map.get(string.split(",")[0]);
+				list.add(string.split(",")[1]);
+				map.put(string.split(",")[0], list);
+			} else {
+				list = new ArrayList<>();
+				list.add(string.split(",")[1]);
+				map.put(string.split(",")[0], list);
+			}
+		}
+
+		model.addAttribute("courseList", map);
+
+		return "lectureNotes";
+	}
+
+	@GetMapping("/questBank")
+	public String questBank() {
+		return "questBank";
+	}
+
+	@GetMapping("/internship")
+	public String internship() {
+		return "internship";
+	}
+
+	@GetMapping("/uploadNotes")
+	public String uploadNotes() {
+		return "uploadNotes";
+	}
 }

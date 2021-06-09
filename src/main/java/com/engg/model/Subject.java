@@ -165,6 +165,13 @@ public class Subject {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Subject [id=" + id + ", departmentName=" + departmentName + ", serialNo=" + serialNo + ", topics="
+				+ topics + ", platform=" + platform + ", link=" + link + ", start=" + start + ", end=" + end
+				+ ", subject=" + subject + ", lastUpdatedBy=" + lastUpdatedBy + ", lastUpdatedOn=" + lastUpdatedOn
+				+ ", year=" + year + ", orderForDisplay=" + orderForDisplay + ", courseName=" + courseName + "]";
+	}
+
 }

@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.engg.model.IpAddress;
+import com.engg.model.LectureNotes;
 import com.engg.model.Subject;
 import com.engg.repository.IpRepository;
+import com.engg.repository.NotesRepository;
 import com.engg.repository.UploadRepositoryNew;
 import com.engg.service.UploadService;
 
@@ -29,6 +31,9 @@ public class UploadServiceImpl implements UploadService {
 
 	@Autowired
 	private IpRepository ipRepository;
+
+	@Autowired
+	private NotesRepository noteRepository;
 
 	public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	static String[] HEADERs = { "Id", "Title", "Description", "Published" };
@@ -109,7 +114,7 @@ public class UploadServiceImpl implements UploadService {
 	}
 
 	@Override
-	public List<Subject> retriveSubjectExcelData(String courseName, String year) {
+	public List<Object[]> retriveSubjectExcelData(String courseName, String year) {
 
 		return repository.retriveSubjectExcelData(courseName, year);
 	}
@@ -126,8 +131,8 @@ public class UploadServiceImpl implements UploadService {
 	}
 
 	@Override
-	public List<String> getOtherYearCourseName(String year) {
-		return repository.getOtherYearCourseName(year);
+	public List<String> getOtherYearCourseName(String year, String maths) {
+		return repository.getOtherYearCourseName(year, maths);
 	}
 
 	@Override
@@ -141,6 +146,89 @@ public class UploadServiceImpl implements UploadService {
 	public List<IpAddress> getIpAddressDetails() {
 		// TODO Auto-generated method stub
 		return ipRepository.findAll();
+	}
+
+	@Override
+	public void uploadNotesService(MultipartFile file) {
+		try {
+//			repository.deleteDataIfAvailable(year, orderForDisplay, courseName);
+
+			List<LectureNotes> notes = excelToNotes(file.getInputStream());
+
+			noteRepository.saveAll(notes);
+		} catch (IOException e) {
+			throw new RuntimeException("fail to store excel data: " + e.getMessage());
+		}
+	}
+
+	private List<LectureNotes> excelToNotes(InputStream inputStream) {
+		List<LectureNotes> notesList = new LinkedList<>();
+		int k = 0;
+		try {
+			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
+			XSSFSheet sheet = wb.getSheetAt(0);
+			XSSFRow row;
+//			FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+			for (int j = 2; j < sheet.getPhysicalNumberOfRows() - 1; j++) {
+				LectureNotes notes = new LectureNotes();
+//				notes.setYear(year);
+//				notes.setOrderForDisplay(displayOrder);
+//				notes.setCourseName(courseName);
+
+				row = sheet.getRow(j);
+				k = 0;
+
+//				notes.setYear(wb.getSheetAt(0).getSheetName());
+
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
+//					notes.setSubject(row.getCell((short) k).getStringCellValue());
+					notes.setYear(row.getCell((short) k).getStringCellValue());
+				}
+				k++;
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
+//					notes.setTopics(row.getCell((short) k).getStringCellValue());
+					notes.setDepartment(row.getCell((short) k).getStringCellValue());
+
+				}
+				k++;
+
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
+//					notes.setLink(evaluator.evaluate(row.getCell((short) k)).getStringValue());
+					notes.setTitle(row.getCell((short) k).getStringCellValue());
+
+				}
+				k++;
+
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
+//					notes.setLink(evaluator.evaluate(row.getCell((short) k)).getStringValue());
+					notes.setLocation(row.getCell((short) k).getStringCellValue());
+
+				}
+
+				notes.setLastUpdatedOn(LocalDateTime.now());
+				notesList.add(notes);
+
+			}
+
+			wb.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
+
+		return notesList;
+	}
+
+	@Override
+	public List<String> getAllYearAndDeptNotes() {
+		return noteRepository.getAllYearAndDeptNotes();
+	}
+
+	@Override
+	public List<LectureNotes> retriveNotesExcelData(String courseName, String year) {
+		// TODO Auto-generated method stub
+		return noteRepository.retriveSubjectExcelData(courseName, year);
 	}
 
 	/*

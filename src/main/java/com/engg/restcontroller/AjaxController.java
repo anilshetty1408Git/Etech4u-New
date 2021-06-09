@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.engg.model.AjaxModel;
+import com.engg.model.LectureNotes;
 import com.engg.model.Subject;
 import com.engg.service.UploadService;
 
@@ -29,17 +30,32 @@ public class AjaxController {
 
 	@PostMapping(value = "/retriveSubjectExcelData", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, List<Subject>> retriveSubjectExcelData(@RequestBody AjaxModel ajax) {
-		List<Subject> list = new ArrayList<>();
+		List<Object[]> list = new ArrayList<>();
 		list = service.retriveSubjectExcelData(ajax.getCourseName(), ajax.getYear());
+		Subject subject = null;
+		List<Subject> subList = new ArrayList<>();
+		Object[] obj = null;
 		Map<String, List<Subject>> map = new LinkedHashMap<>();
+		for (Object object : list) {
+			obj = (Object[]) object;
+			subject = new Subject();
+			subject.setId((Long) obj[0]);
+			subject.setTopics((String) obj[1]);
+			subject.setLink((String) obj[2]);
+			subject.setSubject((String) obj[3]);
+			subList.add(subject);
+
+		}
+
 		Subject dept = new Subject();
 		List<Subject> newList = new ArrayList<>();
-		for (Subject departments : list) {
+		for (Subject departments : subList) {
 			dept = new Subject();
 			newList = new ArrayList<>();
 			dept.setId(departments.getId());
 			dept.setTopics(departments.getTopics());
 			dept.setLink(departments.getLink());
+			dept.setSubject(departments.getSubject());
 			newList.add(dept);
 			if (map.containsKey(departments.getSubject())) {
 				newList.addAll(map.get(departments.getSubject()));
@@ -64,4 +80,24 @@ public class AjaxController {
 	public String checkAjax(@RequestBody String firstName) {
 		return "success";
 	}
+
+	@PostMapping(value = "/retriveNotesExcelData", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, List<LectureNotes>> retriveNotesExcelData(@RequestBody AjaxModel ajax) {
+		List<LectureNotes> list = new ArrayList<>();
+		list = service.retriveNotesExcelData(ajax.getCourseName(), ajax.getYear());
+		Map<String, List<LectureNotes>> map = new LinkedHashMap<>();
+		LectureNotes dept = new LectureNotes();
+		List<LectureNotes> newList = new ArrayList<>();
+		for (LectureNotes departments : list) {
+			dept = new LectureNotes();
+			newList = new ArrayList<>();
+			dept.setId(departments.getId());
+//			dept.setTitle(departments.getTitle());
+			dept.setLocation(departments.getLocation());
+			newList.add(dept);
+			map.put(departments.getTitle(), newList);
+		}
+		return map;
+	}
+
 }

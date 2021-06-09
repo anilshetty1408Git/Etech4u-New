@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.engg.model.LectureNotes;
 import com.engg.model.Subject;
 
 @Repository
@@ -30,12 +31,12 @@ public interface UploadRepositoryNew extends JpaRepository<Subject, Long>, JpaSp
 
 	@Modifying
 
-	@Query(value = "SELECT DISTINCT s.year,s.courseName FROM Subject s where s.year<>:year ORDER BY orderForDisplay")
-	List<String> getOtherYearCourseName(String year);
+	@Query(value = "SELECT DISTINCT s.year,s.courseName FROM Subject s where s.year<>:year and s.year<>:maths ORDER BY orderForDisplay")
+	List<String> getOtherYearCourseName(String year, String maths);
 
 	@Modifying
 
-	@Query(value = "SELECT s FROM Subject s WHERE s.courseName=:courseName AND s.year=:year")
-	List<Subject> retriveSubjectExcelData(String courseName, String year);
+	@Query(value = "SELECT s.id,s.topics,s.link,s.subject FROM Subject s WHERE s.courseName=:courseName AND s.year=:year")
+	List<Object[]> retriveSubjectExcelData(String courseName, String year);
 
 }

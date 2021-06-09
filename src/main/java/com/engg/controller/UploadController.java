@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.engg.model.LectureNotes;
 import com.engg.model.Subject;
 import com.engg.service.UploadService;
 
@@ -60,4 +61,26 @@ public class UploadController {
 
 		return "redirect:/uploadMaths";
 	}
+	
+	@PostMapping("/uploadNotes")
+	public String uploadNotes(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
+			@ModelAttribute("LectureNotes") LectureNotes notes, BindingResult result) {
+
+		// check if file is empty
+		if (file.isEmpty()) {
+			attributes.addFlashAttribute("message", "Please select a file to upload.");
+			return "redirect:/20NanU14";
+		}
+
+		// normalize the file path
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+		uploadService.uploadNotesService(file);
+
+		// return success response
+		attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+
+		return "redirect:/uploadNotes";
+	}
+	
 }
