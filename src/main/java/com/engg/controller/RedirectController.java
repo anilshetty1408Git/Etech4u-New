@@ -28,25 +28,8 @@ public class RedirectController {
 	@Autowired
 	private UploadService service;
 
-	private static final String[] HEADERS_TO_TRY = { "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP",
-			"HTTP_X_FORWARDED_FOR", "HTTP_X_FORWARDED", "HTTP_X_CLUSTER_CLIENT_IP", "HTTP_CLIENT_IP",
-			"HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR" };
-
-	private static String getClientIpAddress(HttpServletRequest request) {
-
-		for (String header : HEADERS_TO_TRY) {
-			String ip = request.getHeader(header);
-			if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
-				return ip;
-			}
-		}
-
-		return "Hello";
-	}
-
 	@GetMapping("/")
 	public String landingPage(ModelAndView model, HttpServletRequest request) {
-
 		InetAddress ip;
 		IpAddress address = new IpAddress();
 		try {
@@ -59,12 +42,15 @@ public class RedirectController {
 
 			e.printStackTrace();
 		}
-
-		String s = getClientIpAddress(request);
-
 		return "redirect:/home";
 	}
 
+	/**
+	 * admin home access
+	 * 
+	 * @param model model
+	 * @return admin page
+	 */
 	@GetMapping("/20NanU14")
 	public String admin(Model model) {
 		model.addAttribute("subject", new Subject());
@@ -103,7 +89,6 @@ public class RedirectController {
 
 		Map<Integer, List<String>> map = new TreeMap<>();
 		List<String> list = new ArrayList<>();
-//		enggList.stream().map(s -> s.split(",")[0]).forEach(map.put(s, value));
 
 		for (String string : enggList) {
 			if (map.containsKey(Integer.valueOf(string.split(",")[0]))) {
@@ -118,7 +103,6 @@ public class RedirectController {
 		}
 
 		model.addAttribute("courseList", map);
-
 		return "civilEngg";
 	}
 
@@ -169,15 +153,9 @@ public class RedirectController {
 
 	@GetMapping("/lectureNotes")
 	public String getLetcureNotes(Model model) {
-//		List<String> firstYearList = service.getFirstYearCourseName("Maths");
-//		model.addAttribute("courseList", firstYearList);
-
 		List<String> enggList = service.getAllYearAndDeptNotes();
-
 		Map<String, List<String>> map = new TreeMap<>();
 		List<String> list = new ArrayList<>();
-//		enggList.stream().map(s -> s.split(",")[0]).forEach(map.put(s, value));
-
 		for (String string : enggList) {
 			if (map.containsKey(string.split(",")[0])) {
 				list = map.get(string.split(",")[0]);
@@ -189,9 +167,7 @@ public class RedirectController {
 				map.put(string.split(",")[0], list);
 			}
 		}
-
 		model.addAttribute("courseList", map);
-
 		return "lectureNotes";
 	}
 
@@ -208,5 +184,15 @@ public class RedirectController {
 	@GetMapping("/uploadNotes")
 	public String uploadNotes() {
 		return "uploadNotes";
+	}
+
+	@GetMapping("/doc")
+	public String doc() {
+		return "doc";
+	}
+
+	@GetMapping("/eTutorials")
+	public String eTutorials() {
+		return "eTutorials";
 	}
 }

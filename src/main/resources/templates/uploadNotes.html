@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Etech4u</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/css/style4.css">
+<script data-ad-client="ca-pub-1746371154114248" async
+	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+	<a href="/20NanU14">Admin Home</a>
+	<section class="my-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 mx-auto border">
+					<h2>Upload Maths</h2>
+					<br>
+					<p th:text="${message}" th:if="${message ne null}"
+						class="alert alert-primary"></p>
+					<form method="post" th:action="@{/uploadNotes}"
+						th:object="${LectureNotes}" enctype="multipart/form-data">
+
+						<div class="col-md-12"></div>
+
+						<div class="col-md-4" align="center">
+							<label>Select file to upload</label> <input type="file"
+								name="file" class="form-control-file" th:required="true">
+						</div>
+						<br>
+						<div class="col-md-12" align="center">
+							<button type="submit" class="btn btn-primary">Upload
+								File</button>
+						</div>
+						<br>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

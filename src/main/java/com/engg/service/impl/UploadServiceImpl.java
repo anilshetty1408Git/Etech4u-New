@@ -44,9 +44,7 @@ public class UploadServiceImpl implements UploadService {
 
 		try {
 			repository.deleteDataIfAvailable(year, orderForDisplay, courseName);
-
 			List<Subject> dept = excelTodepartments(file.getInputStream(), year, orderForDisplay, courseName);
-
 			repository.saveAll(dept);
 		} catch (IOException e) {
 			throw new RuntimeException("fail to store excel data: " + e.getMessage());
@@ -71,22 +69,25 @@ public class UploadServiceImpl implements UploadService {
 
 				row = sheet.getRow(j);
 				k = 0;
-
 				dept.setDepartmentName(wb.getSheetAt(0).getSheetName());
-
+				System.out.println("1"+row.getCell((short) k));
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
 					dept.setSubject(row.getCell((short) k).getStringCellValue());
-
 				}
 				k++;
+				System.out.println("2"+row.getCell((short) k));
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
 					dept.setTopics(row.getCell((short) k).getStringCellValue());
 				}
 				k = 7;
-
+				System.out.println("3"+row.getCell((short) k));
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
 					dept.setLink(evaluator.evaluate(row.getCell((short) k)).getStringValue());
-
+				}
+				k++;
+				System.out.println("4"+row.getCell((short) k));
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
+					dept.setWebLink(row.getCell((short) k).getStringCellValue());
 				}
 
 				if (org.apache.commons.lang3.StringUtils.isNotEmpty(dept.getSubject())) {
@@ -94,34 +95,28 @@ public class UploadServiceImpl implements UploadService {
 					dept.setLastUpdatedOn(LocalDateTime.now());
 					deptList.add(dept);
 				}
-
 			}
-
 			wb.close();
 
 		} catch (IOException e) {
 			e.printStackTrace();
 
 		}
-
 		return deptList;
 	}
 
 	@Override
 	public List<Subject> getDepartmentName() {
-
 		return repository.findAll();
 	}
 
 	@Override
 	public List<Object[]> retriveSubjectExcelData(String courseName, String year) {
-
 		return repository.retriveSubjectExcelData(courseName, year);
 	}
 
 	@Override
 	public Optional<Subject> getDepartmentById(Long id) {
-
 		return repository.findById(id);
 	}
 
@@ -137,24 +132,18 @@ public class UploadServiceImpl implements UploadService {
 
 	@Override
 	public void saveIpAddress(IpAddress address) {
-		// TODO Auto-generated method stub
 		ipRepository.save(address);
-//		repository.save(address);
 	}
 
 	@Override
 	public List<IpAddress> getIpAddressDetails() {
-		// TODO Auto-generated method stub
 		return ipRepository.findAll();
 	}
 
 	@Override
 	public void uploadNotesService(MultipartFile file) {
 		try {
-//			repository.deleteDataIfAvailable(year, orderForDisplay, courseName);
-
 			List<LectureNotes> notes = excelToNotes(file.getInputStream());
-
 			noteRepository.saveAll(notes);
 		} catch (IOException e) {
 			throw new RuntimeException("fail to store excel data: " + e.getMessage());
@@ -168,46 +157,30 @@ public class UploadServiceImpl implements UploadService {
 			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
 			XSSFSheet sheet = wb.getSheetAt(0);
 			XSSFRow row;
-//			FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
 			for (int j = 2; j < sheet.getPhysicalNumberOfRows() - 1; j++) {
 				LectureNotes notes = new LectureNotes();
-//				notes.setYear(year);
-//				notes.setOrderForDisplay(displayOrder);
-//				notes.setCourseName(courseName);
-
 				row = sheet.getRow(j);
 				k = 0;
-
-//				notes.setYear(wb.getSheetAt(0).getSheetName());
-
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
-//					notes.setSubject(row.getCell((short) k).getStringCellValue());
 					notes.setYear(row.getCell((short) k).getStringCellValue());
 				}
 				k++;
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
-//					notes.setTopics(row.getCell((short) k).getStringCellValue());
 					notes.setDepartment(row.getCell((short) k).getStringCellValue());
-
 				}
 				k++;
 
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
-//					notes.setLink(evaluator.evaluate(row.getCell((short) k)).getStringValue());
 					notes.setTitle(row.getCell((short) k).getStringCellValue());
 
 				}
 				k++;
 
 				if (org.apache.commons.lang3.StringUtils.isNotBlank(row.getCell((short) k).getStringCellValue())) {
-//					notes.setLink(evaluator.evaluate(row.getCell((short) k)).getStringValue());
 					notes.setLocation(row.getCell((short) k).getStringCellValue());
-
 				}
-
 				notes.setLastUpdatedOn(LocalDateTime.now());
 				notesList.add(notes);
-
 			}
 
 			wb.close();
@@ -227,13 +200,7 @@ public class UploadServiceImpl implements UploadService {
 
 	@Override
 	public List<LectureNotes> retriveNotesExcelData(String courseName, String year) {
-		// TODO Auto-generated method stub
 		return noteRepository.retriveSubjectExcelData(courseName, year);
 	}
-
-	/*
-	 * @Override public void save(IpAddress address) { // TODO Auto-generated method
-	 * stub repository.save(address); }
-	 */
 
 }

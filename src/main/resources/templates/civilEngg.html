@@ -14,24 +14,15 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
-
-<!-- Our Custom CSS -->
-<!-- <link rel="stylesheet" href="/css/style4.css"> -->
 <link href="assets/css/style.css" rel="stylesheet">
-
-<!-- Favicons -->
 <link href="/images/header.jpeg" rel="icon">
 <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-<!-- Google Fonts -->
 <link
 	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
 	rel="stylesheet">
 
-<!-- Vendor CSS Files -->
 <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-<!--   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
 	rel="stylesheet">
 <link href="assets/vendor/boxicons/css/boxicons.min.css"
@@ -72,15 +63,14 @@
 }
 </Style>
 
-
-
+<script data-ad-client="ca-pub-1746371154114248" async
+	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 </head>
 
 <body>
 	<div lang="en" th:insert="header_other :: header_other"></div>
 	<div class="wrapper">
-		<!-- Sidebar  -->
 		<nav id="sidebar">
 			<ul class="list-unstyled" th:each="s : ${courseList}">
 				<li class="active"><a th:href="@{'#homeSubmenu'+|${s.key}|}"
@@ -112,19 +102,13 @@
 
 		</div>
 	</div>
-
-	<!-- jQuery CDN - Slim version (=without AJAX) -->
-	<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
-	<!-- Popper.JS -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-	<!-- Bootstrap JS -->
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 	<div lang="en" th:insert="footer :: footer"></div>
 
-	<!-- Vendor JS Files -->
 	<script src="assets/vendor/aos/aos.js"></script>
 	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
@@ -133,11 +117,8 @@
 	<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 	<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
 
-	<!-- Template Main JS File -->
 	<script src="assets/js/main.js"></script>
 
-	<!-- <!-- jQuery CDN - Slim version (=without AJAX) -->
-	<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 	<script
@@ -161,7 +142,6 @@
 						data:JSON.stringify(formData),
 						dataType: 'json',
 						contentType : "application/json",
-// 						cache : false,
 						timeout : 1000000,
 						success : function(data, textStatus, jqXHR) {
 							var temp = "<label><h3>Course : "+ courses +"</h3></label>";
@@ -174,18 +154,23 @@
 							temp+='<div id="collapse'+count+'" class="panel-collapse collapse">';
 							var link="";
 							value.forEach(u=>{
-							link+='<div class="bs-example">&nbsp;&nbsp;&nbsp; &#9642; <a href="#Geeks'+u.id+'" class="btn btn-md" data-toggle="modal">'+u.topics+'</a>'; 
+								if(u.webLink=='Virtual'){
+									link+='<div class="bs-example">&nbsp;&nbsp;&nbsp; &#9642; <a href="'+u.link+'" target="_blank" class="btn btn-md">'+u.topics+'</a>';
+								}else{
+								link+='<div class="bs-example">&nbsp;&nbsp;&nbsp; &#9642; <a href="#Geeks'+u.id+'" class="btn btn-md" data-toggle="modal">'+u.topics+'</a>';
+								
+								}
 							link+='<div id="Geeks'+u.id+'" class="modal fade" data-backdrop="static" data-keyboard="false"><div class="modal-dialog modal-lg" style="max-width: auto;"><div class="modal-content">'; 
 							link+='<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeVideo('+u.id+')" style="margin-left: -2%;" >X</button>'; 
-							link+='</div><div class="modal-body">'; 
-// 							link+='<iframe class="iframe-placeholder responsive-iframe" id="Geeks3'+u.id+'" width="470" height="315" src="'+u.link+'" allow="autoplay" frameborder="0" allowfullscreen></iframe>';
-							link+='<object class="iframe-placeholder responsive-iframe" id="Geeks3'+u.id+'" data="'+u.link+'" width="470" height="315"></object>';
+							link+='<a align="center" href="#" id="play-fullscreen" onclick="fullscreen('+u.id+')" style="margin-left: auto;margin-right: auto;width: 8em">Full Screen&nbsp;<i class="bi bi-fullscreen"></i></a></div><div class="modal-body">'; 
+							link+='<object class="iframe-placeholder responsive-iframe full" id="Geeks3'+u.id+'" data="'+u.link+'" width="900" height="413" ></object>';
+							link+='<input type="hidden" id="uniqueId'+count+'" value="Geeks3'+u.id+'">';
+							
 							link+='</div></div></div></div></div>';
 							});
 							temp+=link;
 							temp+='</div></div></div>';	
 							});
-							
 							document.getElementById("data").innerHTML = temp;
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
@@ -193,11 +178,9 @@
 							$("#result").html(jqXHR.responseText);
 							console.log("ERROR : ", jqXHR.responseText);
 							$("#submitButton").prop("disabled", false);
-
 						}
 					});
 		}
-
 	</script>
 	<script> 
 	
@@ -206,15 +189,24 @@
 			$("#Geeks3"+id+"").attr('data', ''); 
 			$("#Geeks3"+id+"").attr('data', url); 
 	}
-		 
+
+	
 	</script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/ulg/popper.min.js"></script>
-	<!-- Font Awesome JS -->
+
 	<script defer
 		src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
 	<script defer
 		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
-</body>
+	<script type="text/javascript">
+	function fullscreen(id){
+	player = document.getElementById("Geeks3"+id+"");
+	var req = player.requestFullscreen
+	    || player.webkitRequestFullscreen
+	    || player.mozRequestFullScreen
+	    || player.msRequestFullscreen;
 
+	req.call(player);
+	}
+</script>
+</body>
 </html>

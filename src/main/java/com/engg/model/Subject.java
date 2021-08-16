@@ -45,6 +45,8 @@ public class Subject {
 	@Column
 	private LocalDateTime lastUpdatedOn;
 
+	private String webLink;
+
 	public Long getId() {
 		return id;
 	}
@@ -166,12 +168,21 @@ public class Subject {
 		this.courseName = courseName;
 	}
 
+	public String getWebLink() {
+		return webLink;
+	}
+
+	public void setWebLink(String webLink) {
+		this.webLink = webLink;
+	}
+
 	@Override
 	public String toString() {
 		return "Subject [id=" + id + ", departmentName=" + departmentName + ", serialNo=" + serialNo + ", topics="
 				+ topics + ", platform=" + platform + ", link=" + link + ", start=" + start + ", end=" + end
 				+ ", subject=" + subject + ", lastUpdatedBy=" + lastUpdatedBy + ", lastUpdatedOn=" + lastUpdatedOn
-				+ ", year=" + year + ", orderForDisplay=" + orderForDisplay + ", courseName=" + courseName + "]";
+				+ ", webLink=" + webLink + ", year=" + year + ", orderForDisplay=" + orderForDisplay + ", courseName="
+				+ courseName + "]";
 	}
 
 }

@@ -24,18 +24,15 @@ public class UploadController {
 	public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@ModelAttribute("subject") Subject subject, BindingResult result) {
 
-		// check if file is empty
 		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Please select a file to upload.");
 			return "redirect:/20NanU14";
 		}
 
-		// normalize the file path
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		uploadService.uploadService(file, subject.getYear(), subject.getOrderForDisplay(), subject.getCourseName());
 
-		// return success response
 		attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
 
 		return "redirect:/20NanU14";
@@ -45,42 +42,36 @@ public class UploadController {
 	public String uploadMaths(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@ModelAttribute("subject") Subject subject, BindingResult result) {
 
-		// check if file is empty
 		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Please select a file to upload.");
 			return "redirect:/20NanU14";
 		}
 
-		// normalize the file path
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		uploadService.uploadService(file, subject.getYear(), subject.getOrderForDisplay(), subject.getCourseName());
 
-		// return success response
 		attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
 
 		return "redirect:/uploadMaths";
 	}
-	
+
 	@PostMapping("/uploadNotes")
 	public String uploadNotes(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			@ModelAttribute("LectureNotes") LectureNotes notes, BindingResult result) {
 
-		// check if file is empty
 		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Please select a file to upload.");
 			return "redirect:/20NanU14";
 		}
 
-		// normalize the file path
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		uploadService.uploadNotesService(file);
 
-		// return success response
 		attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
 
 		return "redirect:/uploadNotes";
 	}
-	
+
 }

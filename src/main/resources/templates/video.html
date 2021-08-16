@@ -14,7 +14,6 @@
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<!-- Latest compiled and minified JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -22,16 +21,10 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		/* Get iframe src attribute value i.e. YouTube video url 
-		and store it in a variable */
 		var url = $("#cartoonVideo").attr('src');
-		/* Assign empty url value to the iframe src attribute when 
-		modal hide, which stop the video playing */
 		$("#myModal").on('hide.bs.modal', function() {
 			$("#cartoonVideo").attr('src', '');
 		});
-		/* Assign the initially stored url back to the iframe src 
-		attribute when modal is displayed again */
 		$("#myModal").on('show.bs.modal', function() {
 			$("#cartoonVideo").attr('src', url);
 		});
@@ -43,13 +36,13 @@
 	display: block;
 }
 </style>
+<script data-ad-client="ca-pub-1746371154114248" async
+	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
 	<div class="bs-example">
-		<!-- Button HTML (to Trigger Modal) -->
 		<a href="#myModal" class="btn btn-md btn-primary" data-toggle="modal">Launch
 			Video Modal</a>
-		<!-- Modal HTML -->
 		<div id="myModal" class="modal fade">
 			<div class="modal-dialog">
 				<div class="modal-content">

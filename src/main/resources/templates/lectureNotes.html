@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Lecture Notes</title>
+
+<!-- Bootstrap CSS CDN -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<link href="assets/css/style.css" rel="stylesheet">
+
+<link href="/images/header.jpeg" rel="icon">
+<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+	rel="stylesheet">
+
+<link href="assets/vendor/aos/aos.css" rel="stylesheet">
+<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+	rel="stylesheet">
+<link href="assets/vendor/boxicons/css/boxicons.min.css"
+	rel="stylesheet">
+<link href="assets/vendor/glightbox/css/glightbox.min.css"
+	rel="stylesheet">
+<link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+<link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+<Style>
+.noBackground {
+	background: none !important;
+}
+
+.azure {
+	color: azure;
+}
+
+.footer {
+	/* 	position: fixed; */
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	/* 	background-color: #ffa500; */
+	color: white;
+	/* 	text-align: center; */
+}
+
+.iframe-placeholder {
+	background:
+		url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"  viewBox="0 0 100% 100%"><text fill="%23FF0000" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle">Loading Please wait...</text></svg>')
+		0px 0px no-repeat;
+}
+
+/* Then style the iframe to fit in the container div with full height and width */
+.responsive-iframe {
+	/* 	position: absolute; */
+	top: 0;
+	left: 0;
+	width: 100%;
+	border: 0;
+}
+</Style>
+
+<script data-ad-client="ca-pub-1746371154114248" async
+	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+<body>
+	<div lang="en" th:insert="header_other :: header_other"></div>
+	<div class="wrapper">
+		<nav id="sidebar">
+			<ul class="list-unstyled" th:each="s : ${courseList}">
+				<li class="active"><a th:href="@{'#homeSubmenu'+|${s.key}|}"
+					data-toggle="collapse" aria-expanded="false"
+					class="dropdown-toggle" th:text="|${s.key}|"></a>
+					<ul class="collapse list-unstyled" th:id="'homeSubmenu'+|${s.key}|">
+
+						<li><label style="font-size: large;"><a href="#"
+								th:each="m : ${s.value}" th:text="|${m}|"
+								th:onclick="displaySubjectData(this,[[${s.key}]])"></a></label></li>
+					</ul></li>
+			</ul>
+		</nav>
+
+		<div id="content">
+
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<div class="container-fluid">
+
+					<button type="button" id="sidebarCollapse" class="btn btn-info">
+						<i class="fas fa-align-left"></i> <span>Toggle Left</span>
+					</button>
+				</div>
+			</nav>
+			<ul class="list-group" id="data">
+			</ul>
+		</div>
+	</div>
+
+	<div lang="en" th:insert="footer :: footer"></div>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="assets/vendor/aos/aos.js"></script>
+	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+	<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="assets/vendor/php-email-form/validate.js"></script>
+	<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+	<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+	<script src="assets/js/main.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar').toggleClass('active');
+			});
+		});
+		function displaySubjectData(course, year) {
+			var courses = course.innerHTML;
+			var years = year;
+			var formData = {
+				'courseName' : courses,
+				'year' : year
+			};
+
+			$
+					.ajax({
+						type : "POST",
+						url : "/retriveNotesExcelData",
+						data : JSON.stringify(formData),
+						dataType : 'json',
+						contentType : "application/json",
+						timeout : 1000000,
+						success : function(data, textStatus, jqXHR) {
+							var temp = "<label><h3>Lecture Notes : " + courses
+									+ "</h3></label>";
+							var count = 0;
+							$
+									.each(
+											data,
+											function(key, value) {
+												count++;
+												temp += '<div class="panel-group fa-ul"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">';
+												temp += '<a href="'+ value[0].location +'" target="_blank" style="background:none";><label style="font-size: 20px;">'
+														+ key
+														+ '</label></a></h4></div>';
+												temp += '<div id="collapse'+count+'" class="panel-collapse collapse">';
+												temp += '</div></div></div>';
+											});
+
+							document.getElementById("data").innerHTML = temp;
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							$("#result").html(jqXHR.responseText);
+							console.log("ERROR : ", jqXHR.responseText);
+							$("#submitButton").prop("disabled", false);
+						}
+					});
+		}
+	</script>
+	<script>
+		function closeVideo(id) {
+			var url = $("#Geeks3" + id + "").attr('src');
+			$("#Geeks3" + id + "").attr('src', '');
+			$("#Geeks3" + id + "").attr('src', url);
+		}
+	</script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/ulg/popper.min.js"></script>
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
+</body>
+</html>

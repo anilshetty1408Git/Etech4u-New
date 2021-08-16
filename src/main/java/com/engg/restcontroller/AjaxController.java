@@ -43,6 +43,7 @@ public class AjaxController {
 			subject.setTopics((String) obj[1]);
 			subject.setLink((String) obj[2]);
 			subject.setSubject((String) obj[3]);
+			subject.setWebLink((String) obj[4]);
 			subList.add(subject);
 
 		}
@@ -56,6 +57,7 @@ public class AjaxController {
 			dept.setTopics(departments.getTopics());
 			dept.setLink(departments.getLink());
 			dept.setSubject(departments.getSubject());
+			dept.setWebLink(departments.getWebLink());
 			newList.add(dept);
 			if (map.containsKey(departments.getSubject())) {
 				newList.addAll(map.get(departments.getSubject()));
@@ -71,9 +73,7 @@ public class AjaxController {
 
 	@GetMapping("/retriveSubjectExcelData/{id}")
 	public Optional<Subject> getDepartmentById(@PathVariable("id") long id) {
-
 		return Optional.ofNullable(service.getDepartmentById(id).orElse(null));
-
 	}
 
 	@PostMapping("/checkAjax")
@@ -92,7 +92,6 @@ public class AjaxController {
 			dept = new LectureNotes();
 			newList = new ArrayList<>();
 			dept.setId(departments.getId());
-//			dept.setTitle(departments.getTitle());
 			dept.setLocation(departments.getLocation());
 			newList.add(dept);
 			map.put(departments.getTitle(), newList);

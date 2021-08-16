@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.engg.model.LectureNotes;
 import com.engg.model.Subject;
 
 @Repository
@@ -36,7 +35,7 @@ public interface UploadRepositoryNew extends JpaRepository<Subject, Long>, JpaSp
 
 	@Modifying
 
-	@Query(value = "SELECT s.id,s.topics,s.link,s.subject FROM Subject s WHERE s.courseName=:courseName AND s.year=:year")
+	@Query(value = "SELECT s.id,s.topics,s.link,s.subject,s.webLink FROM Subject s WHERE s.courseName=:courseName AND s.year=:year")
 	List<Object[]> retriveSubjectExcelData(String courseName, String year);
 
 }
